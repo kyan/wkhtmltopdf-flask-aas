@@ -4,6 +4,6 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/wkhtmltopdf-aas:latest']
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['beta', 'run', 'deploy', 'wkhtmltopdf-aas', '--image', 'gcr.io/$PROJECT_ID/wkhtmltopdf-aas:latest', '--region', 'us-central1','--platform', 'managed']
+    args: ['beta', 'run', 'deploy', 'wkhtmltopdf-aas', '--image', 'gcr.io/$PROJECT_ID/wkhtmltopdf-aas:latest', '--region', 'us-central1','--platform', 'managed', '--memory', '128Mi']
 images:
 - gcr.io/$PROJECT_ID/wkhtmltopdf-aas
