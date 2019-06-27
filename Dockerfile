@@ -1,20 +1,29 @@
-FROM debian:jessie
+FROM debian:stretch-slim
 
-MAINTAINER Genar Trias <genar@cirici.com>
+MAINTAINER Nick Linnell <nick@kyan.com>
 
-RUN apt-get clean && \
-    apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y \
-    gdebi \
-    wget \
-    python-pip
+RUN apt-get update && \
+      apt-get install -y \
+      ttf-freefont \
+      curl \
+      libcurl3 \
+      xfonts-75dpi \
+      xfonts-base \
+      libxrender1 \
+      libxext6 \
+      libxcb1 \
+      libx11-6 \
+      libjpeg62-turbo \
+      fontconfig \
+      python-pip && \
+      rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /tmp
 
-RUN wget http://download.gna.org/wkhtmltopdf/0.12/0.12.2.1/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb && \
-    gdebi --n wkhtmltox-0.12.2.1_linux-jessie-amd64.deb && \
-    rm wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
+RUN curl -OL https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb && \
+      dpkg -i wkhtmltox_0.12.5-1.stretch_amd64.deb && \
+      rm -f wkhtmltox_0.12.5-1.stretch_amd64.deb
 
 RUN ln -s /usr/local/bin/wkhtmltopdf /usr/bin/wkhtmltopdf
 RUN ln -s /usr/local/bin/wkhtmltoimage /usr/bin/wkhtmltoimage
@@ -26,6 +35,6 @@ COPY requeriments.txt /requeriments.txt
 
 RUN pip install -r requeriments.txt
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["python","app.py"]
