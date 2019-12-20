@@ -23,25 +23,19 @@ def jpg():
 
 
 def handle_request(config):
-    # We are getting the url to generate from a form parameter
-    options = {}
-    options = request.values.getlist('options', type=float)
+    request_data = request.get_json()
+    options = request_data['options']
+
+    print('Options provided: ')
     print(options)
 
-    # Converting post options group to dictionary
-    listname = 'options'
-    options = dict()
-    for key, value in request.form.items():
-        if key[:len(listname)] == listname:
-            options[key[len(listname)+1:-1]] = value
+    if ('url' in request_data):
+        print("URL provided: " + request_data['url'])
+        pdf = pdfkit.from_url(str(request_data['url']), output_path=False, configuration=config, options=options)
 
-    if ('url' in request.form):
-        print("URL provided: " + request.form['url'])
-        pdf = pdfkit.from_url(str(request.form['url']), output_path=False, configuration=config, options=options)
-
-    if ('html' in request.form):
+    if ('html' in request_data):
         print("Html provided")
-        pdf = pdfkit.from_string(unicode(request.form['html']), output_path=False, configuration=config, options=options)
+        pdf = pdfkit.from_string(unicode(request_data['html']), output_path=False, configuration=config, options=options)
 
     # If we are receiving the html contents from a uploaded file
     elif ('content' in request.files):
@@ -75,4 +69,3 @@ def run_server():
 
 if __name__ == "__main__":
     run_server()
-
