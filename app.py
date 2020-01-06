@@ -6,6 +6,7 @@ import pdfkit
 import cherrypy
 
 app = Flask(__name__)
+app.debug = True
 
 tmpfolder = "/tmp/"
 
@@ -26,20 +27,22 @@ def handle_request(config):
     request_data = request.get_json()
     options = request_data['options']
 
+    app.logger.info('Request JSON: %s' % request_data)
+
     print('Options provided: ')
     print(options)
 
     if ('url' in request_data):
-        print("URL provided: " + request_data['url'])
+        app.logger.info("URL provided: %s" % request_data['url'])
         pdf = pdfkit.from_url(str(request_data['url']), output_path=False, configuration=config, options=options)
 
     if ('html' in request_data):
-        print("Html provided")
+        app.logger.info("Html provided")
         pdf = pdfkit.from_string(unicode(request_data['html']), output_path=False, configuration=config, options=options)
 
     # If we are receiving the html contents from a uploaded file
     elif ('content' in request.files):
-        print("File provided: " + str(request.files['content']))
+        app.logger.info("File provided: %s" % str(request.files['content']))
         f = request.files['content']
         f.save(tmpfolder + secure_filename(f.filename))
 
