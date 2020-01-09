@@ -1,0 +1,11 @@
+version: "3.6"
+services:
+  web:
+    image: stonehaven/wkhtmltopdf:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app

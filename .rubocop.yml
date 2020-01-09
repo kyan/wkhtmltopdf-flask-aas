@@ -1,0 +1,31 @@
+AllCops:
+  Exclude:
+      - Gemfile
+      - Capfile
+      - Guardfile
+      - 'db/**/*'
+      - 'config/**/*'
+      - 'script/**/*'
+      - 'bin/**/*'
+      - 'vendor/**/*'
+      - 'tmp/**/*'
+      - 'spec/support/**/*'
+      - 'config/routes.rb'
+      - 'node_modules/**/*'
+Metrics/ClassLength:
+  Max: 200
+Metrics/LineLength:
+  Max: 100
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*.rb
+Style/BlockComments:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Metrics/AbcSize:
+  Max: 20
+Style/AndOr:
+  EnforcedStyle: conditionals
+Style/FormatStringToken:
+  EnforcedStyle: unannotated
